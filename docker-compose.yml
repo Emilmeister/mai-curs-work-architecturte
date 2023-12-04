@@ -1,0 +1,18 @@
+version: '3.2'
+
+services:
+  fast-api-auth:
+    build: ./fast-api-app
+    ports:
+      - "80:80"
+    depends_on:
+      - db
+  db:
+    image: mariadb
+    volumes:
+      - ./mariadb/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "3306:3306"
+    environment:
+      - MARIADB_ROOT_PASSWORD=root
+      - MARIADB_ALLOW_EMPTY_ROOT_PASSWORD=true

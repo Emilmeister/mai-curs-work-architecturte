@@ -86,7 +86,6 @@ class User {
   first_name
   last_name
   email
-  title
   insert_date
   update_date
 }
@@ -95,19 +94,19 @@ class Package {
   id
   title
   description
-  insert_date
-  change_date
   delivery_id
+  insert_date
+  update_date
 }
 
 class Delivery {
   id
   title
   sender_id
-  applyer_id
-  insert_date
-  change_date
+  applier_id
   status
+  insert_date
+  update_date
 }
 
 User <- Delivery
