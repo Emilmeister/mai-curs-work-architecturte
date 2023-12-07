@@ -1,10 +1,9 @@
 from fastapi import FastAPI, Response
 from models import User
-from db_executor import execute
+from repo.user_repo import filter_users, get_user_by_login, create_user
 import jwt
 import random
 import string
-
 
 app = FastAPI()
 jwt_encode_secret = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
@@ -12,23 +11,20 @@ jwt_encode_secret = ''.join(random.choice(string.ascii_uppercase + string.digits
 
 @app.post("/user/create")
 async def create(user: User):
-    execute("SHOW DATABASES;")
-    user.first_name = '/user/create'
-    return user
+    print(user)
+    return create_user(user)
 
 
 @app.get("/user/{login}")
 async def get(login):
-    user = User()
-    user.first_name = '/user/:login'
-    return user
+    return get_user_by_login(login)
 
 
 @app.get("/user/filter/{surname_mask}/{name_mask}")
 async def filtering(surname_mask, name_mask):
     user = User()
     user.first_name = '/user/filter/{surname_mask}/{name_mask}'
-    return user
+    return filter_users(surname_mask, name_mask)
 
 
 users = [User()]
@@ -53,7 +49,7 @@ async def login(user: User, response: Response):
 
 
 @app.post("/auth/check")
-async def login(jwt_string: str):
+async def login_in(jwt_string: str):
     try:
         jwt_decoded = jwt.decode(jwt_string, jwt_encode_secret, algorithms=["HS256"])
         return {'user': jwt_decoded, 'success': True}

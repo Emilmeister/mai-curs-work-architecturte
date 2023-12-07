@@ -2,8 +2,9 @@ CREATE DATABASE delivery_service;
 -- delivery_service.`user` definition
 
 CREATE TABLE delivery_service.user_entity (
-	user_entity_id varchar(100) NOT NULL ,
+	user_entity_id varchar(100) NOT NULL DEFAULT UUID(),
 	login varchar(100) NOT NULL,
+	password varchar(100) NOT NULL,
 	first_name varchar(100) NOT NULL,
 	last_name varchar(100) NOT NULL,
 	email varchar(100) NOT NULL,
@@ -14,7 +15,7 @@ CREATE TABLE delivery_service.user_entity (
 ALTER TABLE delivery_service.user_entity ADD CONSTRAINT user_entity_PK PRIMARY KEY (user_entity_id);
 
 CREATE TABLE delivery_service.delivery (
-	delivery_id varchar(100) NOT NULL,
+	delivery_id varchar(100) NOT NULL DEFAULT UUID(),
 	title varchar(100) NOT NULL,
 	sender_id varchar(100) NOT NULL,
 	applier_id varchar(100) NOT NULL,
@@ -32,7 +33,7 @@ ALTER TABLE delivery_service.delivery ADD CONSTRAINT user_entity_id_applier_id
 -- delivery_service.package definition
 
 CREATE TABLE delivery_service.package (
-	package_id varchar(100) NOT NULL,
+	package_id varchar(100) NOT NULL DEFAULT UUID(),
 	title varchar(100) NOT NULL,
 	description varchar(1000) NULL,
 	delivery_id varchar(100) NOT NULL,
@@ -51,14 +52,14 @@ ALTER TABLE delivery_service.package ADD CONSTRAINT delivery_id_package_id
 
 -- inserts user_entity
 INSERT INTO delivery_service.user_entity
-(user_entity_id, login, first_name, last_name, email, insert_date, update_date)
-VALUES('8722f110-9467-11ee-8e92-0242ac120001', 'ivan1', 'Ivan', 'Ivanov',  'ivan@mail.ru', current_timestamp(), '0000-00-00 00:00:00');
+(user_entity_id, login, password, first_name, last_name, email, insert_date, update_date)
+VALUES('8722f110-9467-11ee-8e92-0242ac120001', 'ivan1', 'test', 'Ivan', 'Ivanov',  'ivan@mail.ru', current_timestamp(), '0000-00-00 00:00:00');
 INSERT INTO delivery_service.user_entity
-(user_entity_id, login, first_name, last_name, email, insert_date, update_date)
-VALUES('8722f110-9467-11ee-8e92-0242ac120002', 'petr1', 'Petr', 'Petrov',  'petr@mail.ru', current_timestamp(), '0000-00-00 00:00:00');
+(user_entity_id, login, password, first_name, last_name, email, insert_date, update_date)
+VALUES('8722f110-9467-11ee-8e92-0242ac120002', 'petr1', 'test', 'Petr', 'Petrov',  'petr@mail.ru', current_timestamp(), '0000-00-00 00:00:00');
 INSERT INTO delivery_service.user_entity
-(user_entity_id, login, first_name, last_name, email, insert_date, update_date)
-VALUES('8722f110-9467-11ee-8e92-0242ac120003', 'ilya1', 'Ilya', 'Vasilev', 'ilya@mail.ru', current_timestamp(), '0000-00-00 00:00:00');
+(user_entity_id, login, password, first_name, last_name, email, insert_date, update_date)
+VALUES('8722f110-9467-11ee-8e92-0242ac120003', 'ilya1', 'test', 'Ilya', 'Vasilev', 'ilya@mail.ru', current_timestamp(), '0000-00-00 00:00:00');
 
 
 -- inserts delivery

@@ -3,60 +3,39 @@ from pydantic import BaseModel, Field
 
 
 class User(BaseModel):
-    id: int | None = None
-    login: str | None = None
-    password: str | None = None
-    first_name: str | None = None
-    last_name: str | None = None
-    email: str | None = None
-    insert_date: datetime | None = None
-    update_date: datetime | None = None
+    id: str | None = None
+    login: str = Field(default=None)
+    password: str = Field(default=None)
+    first_name: str = Field(default=None)
+    last_name: str = Field(default=None)
+    email: str = Field(default=None)
+    insert_date: str | None = None
+    update_date: str | None = None
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.id = 0
-        self.login = 'ivan'
-        self.password = 'pass'
-        self.first_name = 'Ivan'
-        self.last_name = 'Ivanov'
-        self.email = 'ivan.ivanov@mail.ru'
-        self.insert_date = datetime.now()
-        self.update_date = datetime.now()
 
 
 class Delivery(BaseModel):
-    id: int | None = None
-    title: str | None = None
-    sender_id: int | None = None
-    applier_id: int | None = None
-    status: str | None = None
+    id: str | None = None
+    title: str = Field(default=None)
+    sender_id: int
+    applier_id: int
+    status: str = Field(default=None)
     insert_date: datetime | None = None
     update_date: datetime | None = None
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.id = 0
-        self.title = 'Delivery for new year'
-        self.sender_id = 0
-        self.applier_id = 0
-        self.status = 'NEW'
-        self.insert_date = datetime.now()
-        self.update_date = datetime.now()
 
 
 class Package(BaseModel):
-    id: int | None = None
-    title: str | None = None
-    description: str | None = None
-    delivery_id: int | None = None
+    id: str | None = None
+    title: str = Field(default=None)
+    description: str = Field(default=None)
+    delivery_id: int
     insert_date: datetime | None = None
     update_date: datetime | None = None
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.id = 0
-        self.title = 'TV'
-        self.description = 'Toshiba Ultra'
-        self.delivery_id = 0
-        self.insert_date = datetime.now()
-        self.update_date = datetime.now()
