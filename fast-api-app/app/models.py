@@ -18,10 +18,12 @@ class User(BaseModel):
 
 class Delivery(BaseModel):
     id: str | None = None
-    title: str = Field(default=None)
-    sender_id: int
-    applier_id: int
-    status: str = Field(default=None)
+    title: str | None = None
+    sender_id: str | None = None
+    applier_id: str | None = None
+    status: str | None = None
+    start_date: datetime | None = None
+    end_date: datetime | None = None
     insert_date: datetime | None = None
     update_date: datetime | None = None
 
@@ -31,9 +33,11 @@ class Delivery(BaseModel):
 
 class Package(BaseModel):
     id: str | None = None
-    title: str = Field(default=None)
-    description: str = Field(default=None)
-    delivery_id: int
+    title: str | None = None
+    description: str | None = None
+    delivery_id: str | None = None
+    sender_id: str | None = None
+    applier_id: str | None = None
     insert_date: datetime | None = None
     update_date: datetime | None = None
 

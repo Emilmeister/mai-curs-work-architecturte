@@ -20,16 +20,11 @@ def create_server_connection(host_name, port, database, user_name, user_password
     return connection_new
 
 
-connection = create_server_connection("db", 3306, "delivery_service", "root", 'root')
-
-
 def execute(query, args):
+    connection = create_server_connection("my_database", 3306, "delivery_service", "root", 'root')
     cursor = connection.cursor(prepared=True)
-    try:
-        cursor.execute(query, args)
-        if 'select' not in query.lower():
-            connection.commit()
-        else:
-            return cursor.fetchall()
-    except Error as err:
-        print(f"Error: '{err}'")
+    cursor.execute(query, args)
+    if 'select' not in query.lower():
+        connection.commit()
+    else:
+        return cursor.fetchall()

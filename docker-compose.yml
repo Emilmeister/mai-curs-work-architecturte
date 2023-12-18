@@ -1,13 +1,7 @@
 version: '3.2'
 
 services:
-  fast-api-auth:
-    build: ./fast-api-app
-    ports:
-      - "80:80"
-    depends_on:
-      - db
-  db:
+  my_database:
     image: mariadb
     volumes:
       - ./mariadb/init.sql:/docker-entrypoint-initdb.d/init.sql
@@ -16,3 +10,34 @@ services:
     environment:
       - MARIADB_ROOT_PASSWORD=root
       - MARIADB_ALLOW_EMPTY_ROOT_PASSWORD=true
+    healthcheck:
+      test: [ "CMD", "healthcheck.sh", "--su-mysql", "--connect", "--innodb_initialized" ]
+      start_period: 3s
+      start_interval: 3s
+      interval: 3s
+      timeout: 3s
+      retries: 3
+  fast-api-auth:
+    build: ./fast-api-app
+    entrypoint: ["uvicorn", "auth_controller:app", "--host", "0.0.0.0", "--port", "80"]
+    ports:
+      - "80:80"
+    depends_on:
+      my_database:
+        condition: service_healthy
+  fast-api-package:
+    build: ./fast-api-app
+    entrypoint: [ "uvicorn", "package_controller:app", "--host", "0.0.0.0", "--port", "81" ]
+    ports:
+      - "81:81"
+    depends_on:
+      my_database:
+        condition: service_healthy
+  fast-api-delivery:
+    build: ./fast-api-app
+    entrypoint: [ "uvicorn", "delivery_controller:app", "--host", "0.0.0.0", "--port", "82" ]
+    ports:
+      - "82:82"
+    depends_on:
+      my_database:
+        condition: service_healthy

@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Response
+from fastapi import FastAPI, Response, status
 from models import User
 from repo.user_repo import filter_users, get_user_by_login, create_user
 import jwt
@@ -11,7 +11,6 @@ jwt_encode_secret = ''.join(random.choice(string.ascii_uppercase + string.digits
 
 @app.post("/user/create")
 async def create(user: User):
-    print(user)
     return create_user(user)
 
 
@@ -45,7 +44,7 @@ async def login(user: User, response: Response):
             'insert_date': db_user.insert_date.isoformat(),
         }, jwt_encode_secret, algorithm="HS256")
     else:
-        response.status_code = 401
+        response.status_code = status.HTTP_401_UNAUTHORIZED
 
 
 @app.post("/auth/check")

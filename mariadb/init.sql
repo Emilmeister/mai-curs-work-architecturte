@@ -37,6 +37,8 @@ CREATE TABLE delivery_service.package (
 	title varchar(100) NOT NULL,
 	description varchar(1000) NULL,
 	delivery_id varchar(100) NOT NULL,
+    sender_id varchar(100) NOT NULL,
+	applier_id varchar(100) NOT NULL,
     insert_date DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	update_date DATETIME NULL ON UPDATE CURRENT_TIMESTAMP NOT NULL
 );
@@ -76,19 +78,19 @@ VALUES('fa1f2110-9467-11ee-8e92-0242ac120003', 'delivery three', '8722f110-9467-
 
 -- inserts package
 INSERT INTO delivery_service.package
-(package_id, title, description, delivery_id, insert_date, update_date)
-VALUES('vf7f2110-9467-11ee-8e92-0242ac120001', 'PC', '11400f',   'fa1f2110-9467-11ee-8e92-0242ac120001', current_timestamp(), '0000-00-00 00:00:00');
+(package_id, title, description, delivery_id, insert_date, update_date, sender_id, applier_id)
+VALUES('vf7f2110-9467-11ee-8e92-0242ac120001', 'PC', '11400f',   'fa1f2110-9467-11ee-8e92-0242ac120001', current_timestamp(), '0000-00-00 00:00:00', '8722f110-9467-11ee-8e92-0242ac120001', '8722f110-9467-11ee-8e92-0242ac120002');
 INSERT INTO delivery_service.package
-(package_id, title, description, delivery_id, insert_date, update_date)
-VALUES('vf7f2110-9467-11ee-8e92-0242ac120002', 'T-shirt', null,  'fa1f2110-9467-11ee-8e92-0242ac120001', current_timestamp(), '0000-00-00 00:00:00');
+(package_id, title, description, delivery_id, insert_date, update_date, sender_id, applier_id)
+VALUES('vf7f2110-9467-11ee-8e92-0242ac120002', 'T-shirt', null,  'fa1f2110-9467-11ee-8e92-0242ac120001', current_timestamp(), '0000-00-00 00:00:00', '8722f110-9467-11ee-8e92-0242ac120001', '8722f110-9467-11ee-8e92-0242ac120002');
 INSERT INTO delivery_service.package
-(package_id, title, description, delivery_id, insert_date, update_date)
-VALUES('vf7f2110-9467-11ee-8e92-0242ac120003', 'Monitor', null,  'fa1f2110-9467-11ee-8e92-0242ac120001', current_timestamp(), '0000-00-00 00:00:00');
+(package_id, title, description, delivery_id, insert_date, update_date, sender_id, applier_id)
+VALUES('vf7f2110-9467-11ee-8e92-0242ac120003', 'Monitor', null,  'fa1f2110-9467-11ee-8e92-0242ac120001', current_timestamp(), '0000-00-00 00:00:00', '8722f110-9467-11ee-8e92-0242ac120001', '8722f110-9467-11ee-8e92-0242ac120002');
 INSERT INTO delivery_service.package
-(package_id, title, description, delivery_id, insert_date, update_date)
-VALUES('vf7f2110-9467-11ee-8e92-0242ac120004', 'Phone', 'Meizu', 'fa1f2110-9467-11ee-8e92-0242ac120002', current_timestamp(), '0000-00-00 00:00:00');
+(package_id, title, description, delivery_id, insert_date, update_date, sender_id, applier_id)
+VALUES('vf7f2110-9467-11ee-8e92-0242ac120004', 'Phone', 'Meizu', 'fa1f2110-9467-11ee-8e92-0242ac120002', current_timestamp(), '0000-00-00 00:00:00','8722f110-9467-11ee-8e92-0242ac120002', '8722f110-9467-11ee-8e92-0242ac120003' );
 INSERT INTO delivery_service.package
-(package_id, title, description, delivery_id, insert_date, update_date)
-VALUES('vf7f2110-9467-11ee-8e92-0242ac120005', 'Suit', NULL,     'fa1f2110-9467-11ee-8e92-0242ac120003', current_timestamp(), '0000-00-00 00:00:00');
+(package_id, title, description, delivery_id, insert_date, update_date, sender_id, applier_id)
+VALUES('vf7f2110-9467-11ee-8e92-0242ac120005', 'Suit', NULL,     'fa1f2110-9467-11ee-8e92-0242ac120003', current_timestamp(), '0000-00-00 00:00:00', '8722f110-9467-11ee-8e92-0242ac120003', '8722f110-9467-11ee-8e92-0242ac120001');
 
 
