@@ -24,7 +24,15 @@ def execute(query, args):
     connection = create_server_connection("my_database", 3306, "delivery_service", "root", 'root')
     cursor = connection.cursor(prepared=True)
     cursor.execute(query, args)
-    if 'select' not in query.lower():
+    if 'insert into' in query.lower():
+        uuid = cursor.fetchone()[0]
         connection.commit()
+        connection.close()
+        return uuid
+    elif 'select' not in query.lower():
+        connection.commit()
+        connection.close()
     else:
-        return cursor.fetchall()
+        result = cursor.fetchall()
+        connection.close()
+        return result

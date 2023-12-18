@@ -1,16 +1,29 @@
 from db_executor import execute
-from models import Package
+from models import Package, Delivery
+import httpx
 
 
 def create_package(package: Package):
+    delivery = get_delivery_by_id(package.delivery_id)
     return execute("INSERT INTO delivery_service.package" +
-                   "(title, description, delivery_id) " +
-                   "VALUES(%s, %s, %s);", (
+                   "(title, description, delivery_id, sender_id, applier_id) " +
+                   "VALUES(%s, %s, %s, %s, %s) RETURNING package_id;", (
                        package.title,
                        package.description,
                        package.delivery_id,
+                       delivery.sender_id,
+                       delivery.applier_id
                    ))
 
+
+def get_delivery_by_id(delivery_id):
+    url = "http://fast-api-delivery:82/delivery/get_by_id/" + delivery_id
+    response = httpx.post(url)
+    if response.status_code == 200:
+        response_model = Delivery(**response.json())
+        return response_model
+    else:
+        print(f"Error {response.status_code}: {response.text}")
 
 def get_package_by_user_id(user_id: str):
     packages = []

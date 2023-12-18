@@ -57,7 +57,7 @@ def get_user_by_login(login: str):
 def create_user(user: User):
     return execute("INSERT INTO delivery_service.user_entity "
                    "(login, first_name, password, last_name, email) "
-                   "VALUES(%s, %s, %s, %s, %s);", (
+                   "VALUES(%s, %s, %s, %s, %s) RETURNING user_entity_id;", (
                        user.login,
                        user.password,
                        user.first_name,

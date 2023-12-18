@@ -31,6 +31,7 @@ users = [User()]
 
 @app.post("/auth/login")
 async def login(user: User, response: Response):
+    print(user)
     user_list = list(filter(lambda u: u.login == user.login and u.password == user.password, users))
     if len(user_list) == 1:
         db_user = user_list[0]

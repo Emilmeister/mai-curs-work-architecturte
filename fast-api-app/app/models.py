@@ -9,8 +9,8 @@ class User(BaseModel):
     first_name: str = Field(default=None)
     last_name: str = Field(default=None)
     email: str = Field(default=None)
-    insert_date: str | None = None
-    update_date: str | None = None
+    insert_date: datetime | None = None
+    update_date: datetime | None = None
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
