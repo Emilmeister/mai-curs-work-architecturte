@@ -21,7 +21,7 @@ def create_server_connection(host_name, port, database, user_name, user_password
 
 
 def execute(query, args):
-    connection = create_server_connection("my_database", 3306, "delivery_service", "root", 'root')
+    connection = create_server_connection("proxysql", 6033, "delivery_service", "root", 'root')
     cursor = connection.cursor(prepared=True)
     cursor.execute(query, args)
     if 'insert into' in query.lower():

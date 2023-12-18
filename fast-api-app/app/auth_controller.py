@@ -16,15 +16,17 @@ async def create(user: User):
 
 @app.get("/user/{login}")
 async def get(login):
-    return get_user_by_login(login)
+    result = get_user_by_login(login, 0)
+    if result != None:
+        return result
+    else:
+        result = get_user_by_login(login, 1)
 
 
 @app.get("/user/filter/{surname_mask}/{name_mask}")
 async def filtering(surname_mask, name_mask):
-    user = User()
-    user.first_name = '/user/filter/{surname_mask}/{name_mask}'
-    return filter_users(surname_mask, name_mask)
-
+    result = filter_users(surname_mask, name_mask, 0)
+    return result.extend(filter_users(surname_mask, name_mask, 1))
 
 users = [User()]
 

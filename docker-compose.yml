@@ -6,7 +6,7 @@ services:
     volumes:
       - ./mariadb/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
-      - "3306:3306"
+      - "4306:3306"
     environment:
       - MARIADB_ROOT_PASSWORD=root
       - MARIADB_ALLOW_EMPTY_ROOT_PASSWORD=true
@@ -16,14 +16,30 @@ services:
       start_interval: 1s
       interval: 1s
       timeout: 1s
-      retries: 5
+      retries: 20
+  my_database_2:
+    image: mariadb
+    volumes:
+      - ./mariadb/init2.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5306:3306"
+    environment:
+      - MARIADB_ROOT_PASSWORD=root
+      - MARIADB_ALLOW_EMPTY_ROOT_PASSWORD=true
+    healthcheck:
+      test: [ "CMD", "healthcheck.sh", "--su-mysql", "--connect", "--innodb_initialized" ]
+      start_period: 1s
+      start_interval: 1s
+      interval: 1s
+      timeout: 1s
+      retries: 20
   fast-api-auth:
     build: ./fast-api-app
     entrypoint: ["uvicorn", "auth_controller:app", "--host", "0.0.0.0", "--port", "80"]
     ports:
       - "80:80"
     depends_on:
-      my_database:
+      proxysql:
         condition: service_healthy
   fast-api-package:
     build: ./fast-api-app
@@ -31,7 +47,7 @@ services:
     ports:
       - "81:81"
     depends_on:
-      my_database:
+      proxysql:
         condition: service_healthy
   fast-api-delivery:
     build: ./fast-api-app
@@ -39,5 +55,24 @@ services:
     ports:
       - "82:82"
     depends_on:
+      proxysql:
+        condition: service_healthy
+  proxysql:
+    image: proxysql/proxysql:2.0.6
+    volumes:
+      - "./proxysql/proxysql.cnf:/etc/proxysql.cnf"
+#      - "./proxysql:/var/lib/proxysql"
+    ports:
+      - "6033:6033"
+      - "6032:6032"
+      - "6080:6080"
+    healthcheck:
+      test: [ "CMD", "proxysql", "ping", "-h", "127.0.0.1", "-P", "6032", "-u", "root", "-proot" ]
+      interval: 1s
+      timeout: 1s
+      retries: 20
+    depends_on:
       my_database:
+        condition: service_healthy
+      my_database_2:
         condition: service_healthy
