@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Response, status
 from models import User
-from repo.user_repo import filter_users, get_user_by_login, create_user
+from repo.user_repo import filter_users, get_user_by_login, create_user, update_user
 import jwt
 import random
 import string
@@ -17,16 +17,23 @@ async def create(user: User):
 @app.get("/user/{login}")
 async def get(login):
     result = get_user_by_login(login, 0)
-    if result != None:
+    if result is not None:
         return result
     else:
         result = get_user_by_login(login, 1)
+        return result
+
+
+@app.post("/user/update")
+async def update(user: User):
+    return update_user(user)
 
 
 @app.get("/user/filter/{surname_mask}/{name_mask}")
 async def filtering(surname_mask, name_mask):
     result = filter_users(surname_mask, name_mask, 0)
     return result.extend(filter_users(surname_mask, name_mask, 1))
+
 
 users = [User()]
 

@@ -29,9 +29,14 @@ def execute(query, args):
         connection.commit()
         connection.close()
         return uuid
+    elif 'update' in query.lower() and 'set' in query.lower():
+        connection.commit()
+        connection.close()
+        return None
     elif 'select' not in query.lower():
         connection.commit()
         connection.close()
+        return None
     else:
         result = cursor.fetchall()
         connection.close()

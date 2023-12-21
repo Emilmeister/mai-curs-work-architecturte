@@ -39,7 +39,7 @@ def get_user_by_login(login: str, db):
                        "insert_date, "
                        "update_date "
                        "FROM delivery_service.user_entity " +
-                       "WHERE login = %s /*sharding " + db + "*/;", (login,)):
+                       "WHERE login = %s /*sharding " + str(db) + "*/;", (login,)):
         user = User()
         user.id = tup[0]
         user.login = tup[1]
@@ -68,8 +68,27 @@ def create_user(user: User):
                    "(login, first_name, password, last_name, email) "
                    "VALUES(%s, %s, %s, %s, %s) RETURNING user_entity_id /*sharding " + str(db) + "*/;", (
                        user.login,
+                       user.first_name,
+                       user.password,
+                       user.last_name,
+                       user.email
+                   ))
+
+
+def update_user(user: User):
+    db = chooseDb(user.id)
+
+    return execute("UPDATE delivery_service.user_entity SET "
+                   "login=%s, "
+                   "password=%s, "
+                   "first_name=%s, "
+                   "last_name=%s, "
+                   "email=%s "
+                   "WHERE user_entity_id=%s; /*sharding " + str(db) + "*/;", (
+                       user.login,
                        user.password,
                        user.first_name,
                        user.last_name,
-                       user.email
+                       user.email,
+                       user.id,
                    ))
