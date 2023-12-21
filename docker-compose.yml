@@ -1,6 +1,16 @@
 version: '3.2'
 
 services:
+  redis_host:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    environment:
+      - REDIS_PASSWORD=pass
+      - REDIS_PORT=6379
+      - REDIS_DATABASES=16
+    healthcheck:
+      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
   my_database:
     image: mariadb
     volumes:
@@ -41,6 +51,8 @@ services:
     depends_on:
       proxysql:
         condition: service_healthy
+      redis_host:
+        condition: service_healthy
   fast-api-package:
     build: ./fast-api-app
     entrypoint: [ "uvicorn", "package_controller:app", "--host", "0.0.0.0", "--port", "81" ]
@@ -49,6 +61,8 @@ services:
     depends_on:
       proxysql:
         condition: service_healthy
+      redis_host:
+        condition: service_healthy
   fast-api-delivery:
     build: ./fast-api-app
     entrypoint: [ "uvicorn", "delivery_controller:app", "--host", "0.0.0.0", "--port", "82" ]
@@ -56,6 +70,8 @@ services:
       - "82:82"
     depends_on:
       proxysql:
+        condition: service_healthy
+      redis_host:
         condition: service_healthy
   proxysql:
     image: proxysql/proxysql:2.0.6
