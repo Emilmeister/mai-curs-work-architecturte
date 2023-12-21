@@ -32,7 +32,8 @@ async def update(user: User):
 @app.get("/user/filter/{surname_mask}/{name_mask}")
 async def filtering(surname_mask, name_mask):
     result = filter_users(surname_mask, name_mask, 0)
-    return result.extend(filter_users(surname_mask, name_mask, 1))
+    result.extend(filter_users(surname_mask, name_mask, 1))
+    return result
 
 
 users = [User()]

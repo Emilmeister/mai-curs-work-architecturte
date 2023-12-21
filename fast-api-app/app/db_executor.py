@@ -28,16 +28,20 @@ def execute(query, args):
         uuid = cursor.fetchone()[0]
         connection.commit()
         connection.close()
+        print("INSERT")
         return uuid
     elif 'update' in query.lower() and 'set' in query.lower():
         connection.commit()
         connection.close()
+        print("UPDATE")
         return None
     elif 'select' not in query.lower():
         connection.commit()
         connection.close()
+        print("OTHER")
         return None
     else:
         result = cursor.fetchall()
         connection.close()
+        print("SELECT")
         return result
