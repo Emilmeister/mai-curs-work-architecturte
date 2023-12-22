@@ -1,6 +1,12 @@
 version: '3.2'
 
 services:
+  wrk:
+    image: loadimpact/loadgentest-wrk
+    entrypoint: ["wrk", "-t100", "-c100", "-d60s", "http://fast-api-auth:80/user/ivan1"]
+    depends_on:
+      fast-api-auth:
+        condition: service_healthy
   redis_host:
     image: redis:latest
     ports:
@@ -48,6 +54,11 @@ services:
     entrypoint: ["uvicorn", "auth_controller:app", "--host", "0.0.0.0", "--port", "80"]
     ports:
       - "80:80"
+    healthcheck:
+      test: ["CMD", "curl", "http://fast-api-auth:80/user/ivan1"]
+      interval: 1s
+      timeout: 1s
+      retries: 20
     depends_on:
       proxysql:
         condition: service_healthy
